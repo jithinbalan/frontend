@@ -4,6 +4,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 function CitiesTable(props) {
 	const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -25,7 +26,7 @@ function CitiesTable(props) {
 		},
 	  }));
   return (
-		<div className='city-table'>
+		<Paper elevation={1} style={{width: 'auto', overflowX: 'scroll'}}>
 			<Table sx={{ minWidth: 700 }} aria-label="customized table">
 				<TableHead>
 					<TableRow>
@@ -40,7 +41,6 @@ function CitiesTable(props) {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-                    
 					{props.cities.map((row) => (
 						<StyledTableRow key={row}>
 						<StyledTableCell component="th" scope="row">{row.capital}</StyledTableCell>
@@ -54,9 +54,9 @@ function CitiesTable(props) {
 
 					</StyledTableRow>
 					))}
-					</TableBody>
-				</Table>
-		</div>
+				</TableBody>
+			</Table>
+		</Paper>
   );
 }
 
