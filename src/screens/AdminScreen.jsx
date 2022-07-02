@@ -10,16 +10,10 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import useForm from 'react-hooks-form-validator';
 import axios from 'axios';
-import AddCityModel from './AddModel';
-import EditCityModel from './AddModel';
+import AddCityModel from '../components/AddModel';
+import EditCityModel from '../components/EditModel';
 
 const URL = process.env.REACT_APP_API_URL;
 
@@ -29,6 +23,7 @@ function CitiesTable() {
 	const [cities, setCities] = useState([])
 	const [selectedCity, setSelectedCity] = useState([])
 	const [formData, setformData] = useState([]);
+	const [isAddBtnLoading, setIsAddBtnLoading] = useState(false)
 
 	const handleChange = (e) => {
 		setformData({
@@ -47,8 +42,8 @@ function CitiesTable() {
 		setEditModelOpen(false);
 	};
 
-	const fetchAllCities= ()=>{
-		axios.get(`${URL}/admin/allCities`)
+	const fetchAllCities= async ()=>{
+		await axios.get(`${URL}/admin/allCities`)
 			  .then(function (response) {
 				  setCities(response.data)
 			  })
@@ -57,10 +52,13 @@ function CitiesTable() {
 			});
 	}
 	const addCity= (formData)=>{
+		setIsAddBtnLoading(true);
+
 		axios.post(`${URL}/admin/addCity`, formData)
 			.then(function (response) {
-				fetchAllCities()
+				setIsAddBtnLoading(false);
 				setAddModelOpen(false);
+				fetchAllCities()
 				console.log(response);
 			})
 			.catch(function (error) {
@@ -79,19 +77,6 @@ function CitiesTable() {
 			});
 	}
 	
-	const updateCity= (e)=>{
-		e.preventDefault()
-
-		console.log("selectedCity",selectedCity)
-		// axios.put(`${URL}/admin/${Id}`)
-		//  .then(function (response) {
-
-		//      console.log(response);
-		//  })
-		//  .catch(function (error) {
-		//      console.log(error);
-		//  });
-	}
 	const getCityByID = (Id)=>{
 
 		axios.get(`${URL}/admin/${Id}`)
@@ -103,34 +88,26 @@ function CitiesTable() {
 				console.log(error);
 			});
 	}
+
 	// Initial api call to get all cities
 	useEffect(() => {
 		// Update the document title using the browser API
 		fetchAllCities()
 	},[]);
 
+
 	// Handle Delete 
 	const handleDelete = (id)=>{
-		console.log(id)
 		deleteCity(id)
 	}
+
 	// Handle Edit 
 	const handleEdit = (id)=>{
-		// console.log(id)
 		getCityByID(id)
 	}
 	// Form Submission  
 		const handleSubmit = (e) => {
 			e.preventDefault()
-			// const formData = {
-			//  "cityname": cityname,
-			//  "country": country,
-			//  "state": state,
-			//  "touristrating": touristrating,
-			//  "dateestablished": dateestablished,
-			//  "estimatedpopulation":estimatedpopulation,
-			//  "currency":currency
-			// }
 			addCity(formData)
 	    };
 		const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -157,99 +134,8 @@ function CitiesTable() {
               Administrator
             </Typography>
 			<Button variant="contained" sx={{ mt: 3, mb: 2 }} onClick={handleClickAddModelOpen} >Add <AddIcon/></Button>
-			<AddCityModel open={addModelOpen} handleClose={handleClose} handleChange={handleChange} handleSubmit={handleSubmit} Title="Create City"/>
-			<EditCityModel open={editModelOpen} handleClose={handleClose} handleChange={handleChange} handleSubmit={updateCity} Title="Edit City" selectedCity={selectedCity} />
-			
-			{/* <Dialog open={open} onClose={handleClose}>
-				<DialogTitle>Create City</DialogTitle>
-				<form onSubmit={handleSubmit} method="POST" encType='multipart/form-data'>
-					<DialogContent>
-							<DialogContentText/>
-							<TextField
-								autoFocus
-								required
-								margin="dense"
-								name="cityname"
-								label="City Name"
-								type="text"
-								fullWidth
-								variant="standard"
-								onChange={(e) => handleChange(e)}
-
-							/>
-							<TextField
-								autoFocus
-								required
-								margin="dense"
-								name="state"
-								label="State"
-								type="text"
-								fullWidth
-								variant="standard"
-								onChange={(e) => handleChange(e)}
-
-							/>
-							<TextField
-								autoFocus
-								required
-								margin="dense"
-								name="country"
-								label="Country Name"
-								type="text"
-								fullWidth
-								variant="standard"
-								onChange={(e) => handleChange(e)}
-
-							/>
-							<TextField
-								autoFocus
-								required
-								margin="dense"
-								name="touristrating"
-								label="Tourist Rating"
-								fullWidth
-								variant="standard"
-								onChange={(e) => handleChange(e)}
-
-							/>
-							<TextField
-								autoFocus
-								required
-								margin="dense"
-								name="estimatedpopulation"
-								label="Estimated Population "
-								fullWidth
-								variant="standard"
-								onChange={(e) => handleChange(e)}
-
-							/>
-							<TextField
-								autoFocus
-								required
-								margin="dense"
-								name="currency"
-								label="Currency "
-								fullWidth
-								variant="standard"
-								onChange={(e) => handleChange(e)}
-							/>
-							<TextField
-								autoFocus
-								required
-								margin="dense"
-								name="dateestablished"
-								label="Date Established "
-								fullWidth
-								variant="standard"
-								onChange={(e) => handleChange(e)}
-							/>
-					</DialogContent>
-					<DialogActions>
-						<Button onClick={handleClose}>Cancel</Button>
-						<Button type='submit'>Submit</Button>
-					</DialogActions>
-				</form>
-			</Dialog> */}
+			<AddCityModel open={addModelOpen} handleClose={handleClose} handleChange={handleChange} handleSubmit={handleSubmit} isAddBtnLoading={isAddBtnLoading}/>
+			<EditCityModel open={editModelOpen} handleClose={handleClose} handleChange={handleChange} selectedCity={selectedCity} URL={URL} fetchAllCities={fetchAllCities}/>
 			<Table sx={{ minWidth: 700 }} aria-label="customized table">
 				<TableHead>
 					<TableRow>

@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import InputAdornment from '@mui/material/InputAdornment';
-import CitiesTable from './CitiesTable'
+import CitiesTable from '../components/CitiesTable'
 import CircularProgress from '@mui/material/CircularProgress';
 
 function SearchCity() {
