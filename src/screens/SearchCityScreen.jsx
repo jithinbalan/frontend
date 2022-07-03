@@ -58,7 +58,7 @@ function SearchCity() {
 					Capital:Cities[0].capital?? "N/A",
 					StateName:Cities[0].subregion?? "N/A",
 					TouristRating:Cities[0].TouristRating?? "N/A",
-					CountryName:Cities[0].nativeName?? "N/A",
+					CountryName:Cities[0].name?? "N/A",
 					DateEstablished:Cities[0].dateestablished?? "N/A",
 					Population:Cities[0].population?? "N/A",
 					Currency:Cities[0].currencies[0].name+"("+Cities[0].currencies[0].symbol+")"?? "N/A",
