@@ -10,6 +10,8 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import AlertMessage from '../components/AlertMessage'
 
+const APIKEY = process.env.REACT_WEATHER_API_KEY;
+
 function SearchCity() {
 	const [cityName, setCityname] = useState('')
 	const [cities, setCities] = useState([])
@@ -50,9 +52,10 @@ function SearchCity() {
 				units: 'metric',
 			  }
 			  let headers = {
-				'X-RapidAPI-Key': 'd742cbe59cmsh467ffee9a090dddp157f3ajsn0828b63f97f3',
+				'X-RapidAPI-Key': APIKEY,
 				'X-RapidAPI-Host': 'community-open-weather-map.p.rapidapi.com'
 			  }
+			  console.log(headers)
 			  let CityData ={
 				Capital:Cities[0].capital?? "N/A",
 				StateName:Cities[0].subregion?? "N/A",
@@ -62,7 +65,7 @@ function SearchCity() {
 				Population:Cities[0].population?? "N/A",
 				Currency:Cities[0].currencies[0].name+"("+Cities[0].currencies[0].symbol+")"?? "N/A",
 			}
-			axios.get('https://community-open-weather-map.p.rapidapi.com/weatheqr',{params,headers}).then(function (weatherResponse) {
+			axios.get('https://community-open-weather-map.p.rapidapi.com/weather',{params,headers}).then(function (weatherResponse) {
 				
 			    const weatherData = weatherResponse.data
 				// Mapping City Data and Weather Data
@@ -79,13 +82,12 @@ function SearchCity() {
 					setIsError(false);
 				}, 2000);
 			});
-			
 			// Setting City Values
 			setCities(CityData);
 	};
   return (
 		<>
-			<Container sx={{ py: 8 }} maxWidth="md">    
+			<Container  sx={{ py: 8 }} maxWidth="md">    
 				<Grid container spacing={2}>
 					<AlertMessage open={isError} message={errorMessage} />
 					<Grid item xs={12}>
@@ -111,7 +113,7 @@ function SearchCity() {
 							className='all-button'
 							variant="outlined" 
 							sx={{ mt: 3, mb: 2 }}
-							onClick={() => cityName != "" ? fetchCity() : false}
+							onClick={() => cityName !== "" ? fetchCity() : false}
 							>
 							Search  {isLoading ? <CircularProgress color="inherit" size="15px"/>:false}
 						</Button>

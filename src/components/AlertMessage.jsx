@@ -11,12 +11,12 @@ export default function AlertMessage(props) {
   return (
     <Stack spacing={2} sx={{ width: '100%' }}>
         <Snackbar 
-			open={props.open} 
+			open={props.open??true} 
 			autoHideDuration={3000}             
 	        anchorOrigin={{ vertical, horizontal }}
         >
-        <Alert  severity={props.message.severity} sx={{ width: '100%' }}>
-          {props.message.msg}
+        <Alert  severity={props.message.severity??"error"} sx={{ width: '100%' }}>
+          {props.message.msg??"N/a"}
         </Alert>
       </Snackbar>
     </Stack>

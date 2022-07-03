@@ -12,14 +12,11 @@ import './App.css';
 function App() {
   return (
 	<>
-
-		<div className="gradient-color">
-			<NavBar/>
-			<Routes>
-				<Route path="/" element={<SearchCity />} />
-				<Route path="/admin" element={<AdminLandingPage />} />
-			</Routes>
-		</div>
+		<NavBar/>
+		<Routes>
+			<Route path="/" element={<SearchCity />} />
+			<Route path="/admin" element={<AdminLandingPage />} />
+		</Routes>
 	</>
   );
 }

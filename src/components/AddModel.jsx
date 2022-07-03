@@ -60,6 +60,7 @@ function AddEditModel(props) {
 								margin="dense"
 								name="touristrating"
 								label="Tourist Rating"
+								type="number"
 								fullWidth
 								variant="standard"
 								onChange={(e) => props.handleChange(e)}
@@ -72,6 +73,7 @@ function AddEditModel(props) {
 								name="estimatedpopulation"
 								label="Estimated Population "
 								fullWidth
+								type="number"
 								variant="standard"
 								onChange={(e) => props.handleChange(e)}
 								defaultValue={props.selectedCity !== undefined ? props.selectedCity.estimated_population:''}
@@ -89,11 +91,15 @@ function AddEditModel(props) {
 							/>
 							<TextField
 								autoFocus
+								type="date"
 								required
 								margin="dense"
 								name="dateestablished"
 								label="Date Established "
 								fullWidth
+								InputLabelProps={{
+									shrink: true,
+								}}
 								variant="standard"
 								onChange={(e) => props.handleChange(e)}
 								defaultValue={props.selectedCity !== undefined ? props.selectedCity.date_established:''}
