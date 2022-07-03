@@ -5,6 +5,7 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Avatar from '@mui/material/Avatar';
 
 function CitiesTable(props) {
 	const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -41,19 +42,17 @@ function CitiesTable(props) {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{props.cities.map((row) => (
-						<StyledTableRow key={row}>
-						<StyledTableCell component="th" scope="row">{row.capital}</StyledTableCell>
-						<StyledTableCell>{row.subregion ?? "N/A"}</StyledTableCell>
-						<StyledTableCell>{row.nativeName ?? "N/A"}</StyledTableCell>
-						<StyledTableCell>{row.raiting?? "N/A"}</StyledTableCell>
-						<StyledTableCell>{row.dateestablished?? "N/A"}</StyledTableCell>
-						<StyledTableCell>{row.population ?? "N/A"}</StyledTableCell>
-						<StyledTableCell>{row.currency ?? "N/A"}</StyledTableCell>
-						<StyledTableCell>N/A</StyledTableCell>
+						<StyledTableRow>
+						<StyledTableCell component="th" scope="row">{props.cities['Capital']}</StyledTableCell>
+						<StyledTableCell>{props.cities['StateName']}</StyledTableCell>
+						<StyledTableCell>{props.cities['CountryName']}</StyledTableCell>
+						<StyledTableCell>{props.cities['TouristRating']}</StyledTableCell>
+						<StyledTableCell>{props.cities['DateEstablished']}</StyledTableCell>
+						<StyledTableCell>{props.cities['Population']}</StyledTableCell>
+						<StyledTableCell>{props.cities['Currency']}</StyledTableCell>
+						<StyledTableCell>{props.cities['Weather']}<Avatar src={props.cities['WeatherIcon']} /></StyledTableCell>
 
 					</StyledTableRow>
-					))}
 				</TableBody>
 			</Table>
 		</Paper>

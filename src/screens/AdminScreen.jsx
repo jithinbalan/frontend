@@ -135,7 +135,7 @@ function CitiesTable() {
 			<Typography component="h1" variant="h2" align="center" color="white" gutterBottom>
               Administrator
             </Typography>
-			<Button variant="contained" sx={{ mt: 3, mb: 2 }} onClick={handleClickAddModelOpen} >Add <AddIcon/></Button>
+			<Button color="inherit" variant="outlined" sx={{ my: 1, mx: 1.5 }} onClick={handleClickAddModelOpen} >Add <AddIcon/></Button>
 			<AddCityModel open={addModelOpen} handleClose={handleClose} handleChange={handleChange} handleSubmit={handleSubmit} isAddBtnLoading={isAddBtnLoading}/>
 			<EditCityModel open={editModelOpen} handleClose={handleClose} handleChange={handleChange} selectedCity={selectedCity} URL={URL} fetchAllCities={fetchAllCities}/>
 			<Paper elevation={3} style={{width: 'auto', overflowX: 'scroll'}}>

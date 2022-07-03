@@ -32,31 +32,17 @@ function SearchCity() {
 
 			await axios.get(`https://restcountries.com/v2/capital/${cityName}`)
 			.then((response) => {
-				// console.log("response.data",response.data);
-				setCities(response.data)
+				return response.data
 			})
-			.then(async (response) => {
-				await fetchWeather(response)
+			.then(async (Cities) => {
+				await fetchWeather(Cities)
 			});
 	};
-	var APIkey = "4b3a77084eb9053bb44da35ed138c850" 
-	var lat ="54"
-	var lon ="-2"
 
-	const fetchWeather = (response) => {
-			// axios
-			// .get(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${APIkey}`)
-			// .then((res) => {
-			//  console.log(res.data);
-			//  // setCities(res.data)
-			// })
-			// .catch((err) => {
-			//  console.log(err);
-			// });
+	const fetchWeather = (Cities) => {
 			let params = {
-				q: 'London,uk',
-				lat: '52',
-				lon: '-02',
+				lat: Cities[0].latlng[0],
+				lon: Cities[0].latlng[1],
 				lang: 'null',
 				units: 'imperial',
 			  }
@@ -64,22 +50,25 @@ function SearchCity() {
 				'X-RapidAPI-Key': 'd742cbe59cmsh467ffee9a090dddp157f3ajsn0828b63f97f3',
 				'X-RapidAPI-Host': 'community-open-weather-map.p.rapidapi.com'
 			  }
-			axios.get('https://community-open-weather-map.p.rapidapi.com/weather',{params,headers}).then(function (res) {
+			axios.get('https://community-open-weather-map.p.rapidapi.com/weather',{params,headers}).then(function (weatherResponse) {
 				
-			
-				// setCities(prevCities => {
-				//   return { ...prevCities, "weather" : [response.data.main] }
-				// })
-				
-		        // setIsloading(false)
-				// // console.log("response",res);
-				// // setCities({
-				// //  ...cities,
-				// //  "weather":"sss",
-				// // });
-				console.log("cities",cities);
+			  let weatherData = weatherResponse.data
+			  
+			    let CityData ={
+					Capital:Cities[0].capital?? "N/A",
+					StateName:Cities[0].subregion?? "N/A",
+					TouristRating:Cities[0].TouristRating?? "N/A",
+					CountryName:Cities[0].nativeName?? "N/A",
+					DateEstablished:Cities[0].dateestablished?? "N/A",
+					Population:Cities[0].population?? "N/A",
+					Currency:Cities[0].currencies[0].name+"("+Cities[0].currencies[0].symbol+")"?? "N/A",
+					Weather: weatherData.main.temp+"°C",
+					WeatherIcon: `http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`,
+				}
+				console.log("CityData",Cities[0].latlng[0]);
 
-
+				setCities(CityData);
+		        setIsloading(false)
 			}).catch(function (error) {
 				console.error(error);
 			});
@@ -120,7 +109,7 @@ function SearchCity() {
 						</Button>
 					</Grid>
 				</Grid>
-				{/* {cities.length !==0 ?<CitiesTable cities={cities}/>:false} */}
+				{cities.length !==0 ?<CitiesTable cities={cities}/>:false}
 			</Container>
 		</>
 
