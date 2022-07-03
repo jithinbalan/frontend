@@ -50,7 +50,11 @@ function CitiesTable(props) {
 						<StyledTableCell>{props.cities['DateEstablished']}</StyledTableCell>
 						<StyledTableCell>{props.cities['Population']}</StyledTableCell>
 						<StyledTableCell>{props.cities['Currency']}</StyledTableCell>
-						<StyledTableCell>{props.cities['Weather']}<Avatar src={props.cities['WeatherIcon']} /></StyledTableCell>
+						{props.cities['Weather'] !== undefined ? 
+							<StyledTableCell>{props.cities['Weather']}<Avatar src={props.cities['WeatherIcon']} /></StyledTableCell> : 
+							<StyledTableCell>N/A</StyledTableCell>
+						}
+						
 
 					</StyledTableRow>
 				</TableBody>

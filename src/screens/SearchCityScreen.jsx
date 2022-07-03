@@ -8,82 +8,89 @@ import CitiesTable from '../components/CitiesTable'
 import CircularProgress from '@mui/material/CircularProgress';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
+import AlertMessage from '../components/AlertMessage'
 
 function SearchCity() {
 	const [cityName, setCityname] = useState('')
 	const [cities, setCities] = useState([])
 	const [isLoading, setIsloading] = useState(false)
+	const [isError, setIsError] = useState(false)
+	const [errorMessage, setErrorMessage] = useState(false)
 
 
 	const fetchCity =async () => {
-		setIsloading(true)
-		// axios.get(`https://restcountries.com/v2/capital/${cityName}`)
-		//  .then((res) => {
-		//    console.log(res.data);
-		//    setCities(res.data)
-		//    let latLng = res.data.latlng
-		//    fetchWeather(latLng)
-		//    setIsloading(false)
-		//  })
-		//  .catch((err) => {
-		//    console.log(err);
-		//    setIsloading(false)
-		//  });
+			setIsloading(true)
 
 			await axios.get(`https://restcountries.com/v2/capital/${cityName}`)
 			.then((response) => {
 				return response.data
+			}).catch((err)=>{
+		        setIsloading(false)
+				// Set error message and flag
+				setIsError(true);
+				setErrorMessage({msg:"Not Data Available",severity:"error"})
+				setTimeout(() => {
+					setIsError(false);
+				}, 2000);
 			})
 			.then(async (Cities) => {
-				await fetchWeather(Cities)
+				// If City is empty for any reason no need to call weather api 
+				if(Cities){
+					await fetchWeather(Cities)
+				}
 			});
 	};
-
+	
 	const fetchWeather = (Cities) => {
+			// Getting LAt an Lng from Cities
 			let params = {
 				lat: Cities[0].latlng[0],
 				lon: Cities[0].latlng[1],
 				lang: 'null',
-				units: 'imperial',
+				units: 'metric',
 			  }
 			  let headers = {
 				'X-RapidAPI-Key': 'd742cbe59cmsh467ffee9a090dddp157f3ajsn0828b63f97f3',
 				'X-RapidAPI-Host': 'community-open-weather-map.p.rapidapi.com'
 			  }
-			axios.get('https://community-open-weather-map.p.rapidapi.com/weather',{params,headers}).then(function (weatherResponse) {
+			  let CityData ={
+				Capital:Cities[0].capital?? "N/A",
+				StateName:Cities[0].subregion?? "N/A",
+				TouristRating:Cities[0].TouristRating?? "N/A",
+				CountryName:Cities[0].name?? "N/A",
+				DateEstablished:Cities[0].dateestablished?? "N/A",
+				Population:Cities[0].population?? "N/A",
+				Currency:Cities[0].currencies[0].name+"("+Cities[0].currencies[0].symbol+")"?? "N/A",
+			}
+			axios.get('https://community-open-weather-map.p.rapidapi.com/weatheqr',{params,headers}).then(function (weatherResponse) {
 				
-			  let weatherData = weatherResponse.data
-			  
-			    let CityData ={
-					Capital:Cities[0].capital?? "N/A",
-					StateName:Cities[0].subregion?? "N/A",
-					TouristRating:Cities[0].TouristRating?? "N/A",
-					CountryName:Cities[0].name?? "N/A",
-					DateEstablished:Cities[0].dateestablished?? "N/A",
-					Population:Cities[0].population?? "N/A",
-					Currency:Cities[0].currencies[0].name+"("+Cities[0].currencies[0].symbol+")"?? "N/A",
+			    const weatherData = weatherResponse.data
+				// Mapping City Data and Weather Data
+			    CityData ={
 					Weather: weatherData.main.temp+"°C",
 					WeatherIcon: `http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`,
 				}
-				console.log("CityData",Cities[0].latlng[0]);
-
-				setCities(CityData);
 		        setIsloading(false)
 			}).catch(function (error) {
-				console.error(error);
+				setErrorMessage({msg:"No Weather Data Available",severity:"error"})
+		        setIsloading(false)
+				setIsError(true);
+				setTimeout(() => {
+					setIsError(false);
+				}, 2000);
 			});
+			
+			// Setting City Values
+			setCities(CityData);
 	};
-
-	
   return (
 		<>
-				
 			<Container sx={{ py: 8 }} maxWidth="md">    
 				<Grid container spacing={2}>
+					<AlertMessage open={isError} message={errorMessage} />
 					<Grid item xs={12}>
 						<TextField
 							type="search"
-							className='search-button'
 							required
 							fullWidth
 							InputProps={{
@@ -101,6 +108,7 @@ function SearchCity() {
 						<Button
 							type="submit"
 							color="inherit" 
+							className='all-button'
 							variant="outlined" 
 							sx={{ mt: 3, mb: 2 }}
 							onClick={() => cityName != "" ? fetchCity() : false}

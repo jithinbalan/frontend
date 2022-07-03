@@ -16,8 +16,24 @@ import AddCityModel from '../components/AddModel';
 import EditCityModel from '../components/EditModel';
 import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import blue from '@mui/material/colors/blue';
+
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const URL = process.env.REACT_APP_API_URL;
+const theme = createTheme();
+
+// for Responsive
+theme.typography.h2 = {
+  fontSize: '2rem',
+  '@media (min-width:600px)': {
+    fontSize: '25rem',
+  },
+  [theme.breakpoints.up('md')]: {
+    fontSize: '3rem',
+  },
+};
 
 function CitiesTable() {
 	const [addModelOpen, setAddModelOpen] = useState(false);
@@ -132,14 +148,15 @@ function CitiesTable() {
 		  }));
     return (
 		<Container sx={{ py: 8 }} maxWidth="md">    
-			<Typography component="h1" variant="h2" align="center" color="white" gutterBottom>
-              Administrator
-            </Typography>
-			<Button color="inherit" variant="outlined" sx={{ my: 1, mx: 1.5 }} onClick={handleClickAddModelOpen} >Add <AddIcon/></Button>
-			<AddCityModel open={addModelOpen} handleClose={handleClose} handleChange={handleChange} handleSubmit={handleSubmit} isAddBtnLoading={isAddBtnLoading}/>
-			<EditCityModel open={editModelOpen} handleClose={handleClose} handleChange={handleChange} selectedCity={selectedCity} URL={URL} fetchAllCities={fetchAllCities}/>
+				<ThemeProvider theme={theme}>
+					<Typography  variant="h2" align="center" color="white" gutterBottom>
+					Administrator
+					</Typography>
+				</ThemeProvider>
+				<Button color="inherit" className='all-button' variant="outlined" sx={{ my: 1, mx: 0 }} onClick={handleClickAddModelOpen} >Add <AddIcon/></Button>
+				<AddCityModel open={addModelOpen} handleClose={handleClose} handleChange={handleChange} handleSubmit={handleSubmit} isAddBtnLoading={isAddBtnLoading}/>
+				<EditCityModel open={editModelOpen} handleClose={handleClose} handleChange={handleChange} selectedCity={selectedCity} URL={URL} fetchAllCities={fetchAllCities}/>
 			<Paper elevation={3} style={{width: 'auto', overflowX: 'scroll'}}>
-		 
 				<Table sx={{ minWidth: 700 }} >
 					<TableHead>
 						<TableRow>

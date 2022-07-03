@@ -3,33 +3,9 @@
   background: -webkit-linear-gradient(to right, #4CA1AF, #2C3E50);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #4CA1AF, #2C3E50); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
-/* .gradient-color{
+.all-button{
+  color: white!important;
+}
+.search-section{
   
-} */
-/* .main .search-section{
-  display: contents;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  width:100%;
-  height:300px;
-}
-.search-section .search-input{
-  width:40%;
-  font-size:1.3rem;
-  border:1px solid grey;
-  border-radius:20px;
-  padding: 5px 20px 2px;
-}
-
-.search-section .search-button{
-  width:50%;
-} */
-
-.search-section .search-input:hover, .search-input:focus{
-  outline:none;
-  border:none;
-  box-shadow: 0px 0px 3px black;
-}
-.admin-city-table{
-  overflow-x:auto;
 }
