@@ -115,7 +115,8 @@ function SearchCity() {
 	* 	Call The Rest countries Api
 	***/
 	const fetchCityFromDb = async ()=>{
-		await axios.get(`${URL}/cities/getCities/${cityName}`)
+		let url = URL??'https://searchcity-backend.herokuapp.com/api'
+		await axios.get(`${url}/cities/getCities/${cityName}`)
 			  .then(function (response) {
 				// Create city object for frontEnd
 				let CityData ={
