@@ -21,6 +21,8 @@ import Rating from '@mui/material/Rating';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const URL = process.env.REACT_APP_API_URL;
+
+// Theme Section
 const theme = createTheme();
 
 	// For Themes
@@ -71,7 +73,10 @@ function CitiesTable() {
 
 
 	// Curd Api Call Function Section
-
+	/**  
+	*	Function To Fetch All Cities from backend
+	*	Store the city in State
+	**/
 	const fetchAllCities= async ()=>{
 		await axios.get(`${URL}/admin/allCities`)
 			  .then(function (response) {
@@ -85,6 +90,10 @@ function CitiesTable() {
 				}, 2000);
 			});
 	}
+	/**  
+	*	Function To Create City 
+	*	If City Created call the function to fetch all city  
+	**/
 	const addCity= (formData)=>{
 		setIsAddBtnLoading(true);
 
@@ -110,6 +119,10 @@ function CitiesTable() {
 				}, 2000);
 			});
 	}
+	/**  
+	*	Function To Delete City 
+	*	If City Deleted call the function to fetch all  city  
+	**/
 	const deleteCity= (Id)=>{
 		axios.delete(`${URL}/admin/${Id}`)
 			.then(function (response) {
@@ -131,7 +144,10 @@ function CitiesTable() {
 				console.log(error);
 			});
 	}
-	
+	/**  
+	*	Function To Get City by id this is for Edit Section 
+	*	 Store the City to new State Selected city and pass this state as a props to edit model
+	**/
 	const getCityByID = (Id)=>{
 
 		axios.get(`${URL}/admin/${Id}`)
