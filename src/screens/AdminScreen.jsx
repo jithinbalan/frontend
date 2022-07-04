@@ -210,8 +210,10 @@ function CitiesTable() {
 
 				<EditCityModel open={editModelOpen} handleClose={handleClose} handleChange={handleChange} selectedCity={selectedCity} URL={URL} fetchAllCities={fetchAllCities}/>
 
-			<Paper elevation={3} style={{width: 'auto', overflowX: 'scroll'}}>
-				<Table sx={{ minWidth: 700 }} >
+			<Paper elevation={3} 
+			style={{width: 'auto', overflowX: 'scroll',overflowY: 'scroll',height:'30rem'}}
+			>
+				<Table sx={{ minWidth: 700 }} stickyHeader>
 					<TableHead>
 						<TableRow>
 							<StyledTableCell>City Name</StyledTableCell>
@@ -225,7 +227,7 @@ function CitiesTable() {
 							<StyledTableCell>Modifiy</StyledTableCell>
 						</TableRow>
 					</TableHead>
-					<TableBody>
+					<TableBody >
 						
 						{cities.length !== 0 ?  cities.map((row) => (
 							<StyledTableRow key={row.id}>
@@ -248,7 +250,19 @@ function CitiesTable() {
 									<EditIcon className="" onClick={() => handleEdit(row.id)}/>
 								</StyledTableCell>
 							</StyledTableRow>
-						)):false}
+						)):
+						<TableRow>
+						 	<StyledTableCell>--------</StyledTableCell>
+							<StyledTableCell>--------</StyledTableCell>
+							<StyledTableCell>--------</StyledTableCell>
+							<StyledTableCell>No</StyledTableCell>
+							<StyledTableCell>Data</StyledTableCell>
+							<StyledTableCell>Available</StyledTableCell>
+							<StyledTableCell>--------</StyledTableCell>
+							{/* <StyledTableCell>Weather</StyledTableCell> */}
+							<StyledTableCell>--------</StyledTableCell>
+						</TableRow>
+						}
 						</TableBody>
 				</Table>
 			</Paper>
