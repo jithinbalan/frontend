@@ -68,7 +68,7 @@ function SearchCity() {
 				'X-RapidAPI-Key': API_KEY??'d742cbe59cmsh467ffee9a090dddp157f3ajsn0828b63f97f3',
 				'X-RapidAPI-Host': 'community-open-weather-map.p.rapidapi.com'
 			  }
-			  	let CityData ={
+			    let CityData ={
 					Capital:Cities[0].capital?? "N/A",
 					StateName:Cities[0].subregion?? "N/A",
 					TouristRating:Cities[0].TouristRating?? "N/A",
@@ -112,12 +112,14 @@ function SearchCity() {
 	/***  
 	* Function to fetch city from db 
 	* If There is no city with the name in Db 
-	* 	Call The Rest countries Api
+	*   Call The Rest countries Api
 	***/
 	const fetchCityFromDb = async ()=>{
+		setIsloading(true)
 		let url = URL??'https://searchcity-backend.herokuapp.com/api'
 		await axios.get(`${url}/cities/getCities/${cityName}`)
 			  .then(function (response) {
+				setIsloading(false)
 				// Create city object for frontEnd
 				let CityData ={
 					Capital:response.data[0].city_name?? "N/A",
@@ -133,6 +135,7 @@ function SearchCity() {
 			  .catch(function (error) {
 				setIsError(true);
 				setErrorMessage({msg:"No data Associated with the city name in DB Fetching Remotely  !",severity:"info"})
+				setIsloading(true)
 				setTimeout(() => {
 					setIsError(false);
 					fetchCity();
@@ -167,6 +170,7 @@ function SearchCity() {
 					</Grid>
 					<Grid item xs={12} justifyContent="center" container>
 						<Button
+							disabled={isLoading}
 							type="submit"
 							color="inherit" 
 							className='all-button'
